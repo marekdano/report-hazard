@@ -1,2 +1,2 @@
 # report-hazard
-app for reporting hazard design as PWA 
+The app for reporting hazards. The app is PWA. 
