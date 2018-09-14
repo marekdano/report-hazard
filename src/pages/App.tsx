@@ -23,6 +23,11 @@ const styles = () => ({
   flex: {
     flexGrow: 1,
   },
+  mainContent: {
+    maxWidth: 600,
+    margin: '0 auto',
+    padding: '1.8em 0 0',
+  },
   drawerHeader: {
     display: 'flex',
     alignItems: 'center',
@@ -103,8 +108,18 @@ class App extends React.Component<WithStyles<typeof styles>, IState> {
             <Typography variant="title" color="inherit" className={classes.flex}>
               RecordHazard
             </Typography>
+            <Button variant="contained" color="secondary">
+              Enable Notifications
+            </Button> 
           </Toolbar>
         </AppBar>
+        <main>
+          <div className={classes.mainContent}>
+            <Typography variant="title" align="center" color="textSecondary">
+              Let's know about a hazard
+            </Typography>
+          </div>
+        </main>
       </div>
     );
   }
