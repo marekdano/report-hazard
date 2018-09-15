@@ -1,5 +1,5 @@
 import * as React from 'react';
-import withStyles, { WithStyles } from '@material-ui/core/styles/withStyles';
+import { withStyles, WithStyles, Theme } from '@material-ui/core/styles';
 import { 
   AppBar,
   Button,
@@ -15,8 +15,9 @@ import {
 import MenuIcon from '@material-ui/icons/Menu';
 import RssFeedIcon from '@material-ui/icons/RssFeed';
 import HelpOutlineIcon from '@material-ui/icons/HelpOutline';
+import AddIcon from '@material-ui/icons/Add';
 
-const styles = () => ({
+const styles = (theme: Theme) => ({
   root: {
     flexGrow: 1,
   },
@@ -40,6 +41,11 @@ const styles = () => ({
   },
   list: {
     width: 250,
+  },
+  fab: {
+    position: 'absolute' as 'absolute',
+    bottom: theme.spacing.unit * 4,
+    right: theme.spacing.unit * 4,
   },
 });
 
@@ -119,10 +125,14 @@ class App extends React.Component<WithStyles<typeof styles>, IState> {
               Let's know about a hazard
             </Typography>
           </div>
+          
+          <Button variant="fab" color="secondary" className={classes.fab} aria-label="Add">
+            <AddIcon />
+          </Button>
         </main>
       </div>
     );
   }
 }
 
-export default withStyles(styles)(App);
+export default withStyles(styles, { withTheme: true })(App);
