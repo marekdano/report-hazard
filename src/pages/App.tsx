@@ -17,6 +17,8 @@ import RssFeedIcon from '@material-ui/icons/RssFeed';
 import HelpOutlineIcon from '@material-ui/icons/HelpOutline';
 import AddIcon from '@material-ui/icons/Add';
 
+import ReportForm from './ReportForm';
+
 const styles = (theme: Theme) => ({
   root: {
     flexGrow: 1,
@@ -126,6 +128,8 @@ class App extends React.Component<WithStyles<typeof styles>, IState> {
             </Typography>
           </div>
           
+          <ReportForm />
+
           <Button variant="fab" color="secondary" className={classes.fab} aria-label="Add">
             <AddIcon />
           </Button>
