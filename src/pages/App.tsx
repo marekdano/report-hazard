@@ -126,10 +126,8 @@ class App extends React.Component<WithStyles<typeof styles>, IState> {
             <Typography variant="title" align="center" color="textSecondary">
               Let's know about a hazard
             </Typography>
+            <ReportForm />
           </div>
-          
-          <ReportForm />
-
           <Button variant="fab" color="secondary" className={classes.fab} aria-label="Add">
             <AddIcon />
           </Button>
