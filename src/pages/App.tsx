@@ -52,11 +52,13 @@ const styles = (theme: Theme) => ({
 });
 
 interface IState {
+  openReportForm: boolean;
   openDrawer: boolean;
 };
 
 class App extends React.Component<WithStyles<typeof styles>, IState> {
   state = {
+    openReportForm: false,
     openDrawer: false,
   };
 
@@ -65,6 +67,12 @@ class App extends React.Component<WithStyles<typeof styles>, IState> {
       openDrawer: open,
     });
   };
+
+  toggleReportForm = (open: boolean) => () => {
+    this.setState({
+      openReportForm: open
+    });
+  }
 
   render() {
     const { classes } = this.props;
@@ -126,11 +134,14 @@ class App extends React.Component<WithStyles<typeof styles>, IState> {
             <Typography variant="title" align="center" color="textSecondary">
               Let's know about a hazard
             </Typography>
-            <ReportForm />
+            {this.state.openReportForm && <ReportForm />}
           </div>
-          <Button variant="fab" color="secondary" className={classes.fab} aria-label="Add">
+          
+          {!this.state.openReportForm && 
+          <Button variant="fab" color="secondary" className={classes.fab} aria-label="Add" onClick={this.toggleReportForm(true)} >
             <AddIcon />
-          </Button>
+          </Button>}
+        
         </main>
       </div>
     );
