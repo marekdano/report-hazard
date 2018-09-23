@@ -23,8 +23,11 @@ const styles = (theme: Theme) =>
     },
   });
 
-class ReportForm extends React.Component<WithStyles<typeof styles>> {
-
+interface IProps {
+  onToggleForm: () => () => void, 
+}
+class ReportForm extends React.Component<WithStyles<typeof styles> & IProps> {
+  
 	render() {
 		const { classes } = this.props; 
 
@@ -54,7 +57,7 @@ class ReportForm extends React.Component<WithStyles<typeof styles>> {
             </Button>
           </div>
 					<div className={classes.btnClose}>
-            <Button variant="fab" aria-label="Close">
+            <Button variant="fab" aria-label="Close" onClick={this.props.onToggleForm}>
               <CloseIcon />
             </Button>
           </div>
