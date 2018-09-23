@@ -24,7 +24,7 @@ const styles = (theme: Theme) =>
   });
 
 interface IProps {
-  onToggleForm: () => () => void, 
+  onToggleForm: (open: boolean) => () => void, 
 }
 class ReportForm extends React.Component<WithStyles<typeof styles> & IProps> {
   
@@ -57,7 +57,7 @@ class ReportForm extends React.Component<WithStyles<typeof styles> & IProps> {
             </Button>
           </div>
 					<div className={classes.btnClose}>
-            <Button variant="fab" aria-label="Close" onClick={this.props.onToggleForm}>
+            <Button variant="fab" aria-label="Close" onClick={this.props.onToggleForm(false)}>
               <CloseIcon />
             </Button>
           </div>

@@ -72,7 +72,7 @@ class App extends React.Component<WithStyles<typeof styles>, IState> {
     this.setState({
       openReportForm: open
     });
-  }
+  };
 
   render() {
     const { classes } = this.props;
@@ -131,10 +131,12 @@ class App extends React.Component<WithStyles<typeof styles>, IState> {
         </AppBar>
         <main>
           <div className={classes.mainContent}>
-            <Typography variant="title" align="center" color="textSecondary">
-              Let's know about a hazard
-            </Typography>
-            {this.state.openReportForm && <ReportForm />}
+            {!this.state.openReportForm &&
+              <Typography variant="title" align="center" color="textSecondary">
+                Let's know about a hazard
+              </Typography>}
+            {this.state.openReportForm && 
+              <ReportForm onToggleForm={this.toggleReportForm} />}
           </div>
           
           {!this.state.openReportForm && 
