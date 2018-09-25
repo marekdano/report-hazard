@@ -131,12 +131,11 @@ class App extends React.Component<WithStyles<typeof styles>, IState> {
         </AppBar>
         <main>
           <div className={classes.mainContent}>
-            {!this.state.openReportForm &&
+            {this.state.openReportForm ?
+              <ReportForm onToggleForm={this.toggleReportForm} /> :
               <Typography variant="title" align="center" color="textSecondary">
                 Let's know about a hazard
               </Typography>}
-            {this.state.openReportForm && 
-              <ReportForm onToggleForm={this.toggleReportForm} />}
           </div>
           
           {!this.state.openReportForm && 
