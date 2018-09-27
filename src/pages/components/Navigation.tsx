@@ -39,7 +39,10 @@ const styles = (theme: Theme) => ({
     position: 'absolute' as 'absolute',
     bottom: theme.spacing.unit * 4,
     right: theme.spacing.unit * 4,
-  },
+	},
+	link: {
+		textDecoration: 'none',
+	},
 });
 
 interface IProp {
@@ -77,17 +80,15 @@ const Navigation =  (props: WithStyles<typeof styles> & IProp) => {
 								<ListItemIcon>
 									<RssFeedIcon />
 								</ListItemIcon>
-								<ListItemText>
-									<NavLink to='/'>Feed</NavLink>
-								</ListItemText>
+								<NavLink className={classes.link} to='/'><ListItemText primary="Feed"/></NavLink>
 							</ListItem>
 							<ListItem button={true}>
 								<ListItemIcon>
 									<HelpOutlineIcon />
 								</ListItemIcon>
-								<ListItemText>
-									<NavLink to='/help'>Help</NavLink>
-								</ListItemText>
+								<NavLink className={classes.link} to='/help'>
+									<ListItemText primary="Help"/>
+								</NavLink>
 							</ListItem>
 							<ListItem>
 								<Button variant="contained" color="secondary">
