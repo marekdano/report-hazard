@@ -4,11 +4,6 @@ import PhoneIcon from '@material-ui/icons/Phone';
 import MailIcon from '@material-ui/icons/Mail';
 
 const styles = (theme: Theme) => ({
-	mainContent: {
-  	maxWidth: 600,
-    margin: '0 auto',
-    padding: '1.8em 0 0',
-	},
 	contact: {
 		marginTop: theme.spacing.unit * 5
 	},
@@ -19,7 +14,7 @@ const styles = (theme: Theme) => ({
 
 const HelpPage = ({classes}: WithStyles<typeof styles>) => {
 	return (
-		<div className={classes.mainContent}>
+		<div>
 			<Typography variant="title" color="textSecondary">
 				Need help?
 			</Typography>
@@ -37,9 +32,7 @@ const HelpPage = ({classes}: WithStyles<typeof styles>) => {
 					<MailIcon />
 				</Button>
 			</div>
-			
 		</div>
-	
 	);
 };
 

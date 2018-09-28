@@ -29,7 +29,7 @@ interface IProps {
 class ReportForm extends React.Component<WithStyles<typeof styles> & IProps> {
   
 	render() {
-		const { classes } = this.props; 
+		const { classes, onToggleForm } = this.props; 
 
 		return (
 			<div className={classes.container}>
@@ -57,7 +57,7 @@ class ReportForm extends React.Component<WithStyles<typeof styles> & IProps> {
             </Button>
           </div>
 					<div className={classes.btnClose}>
-            <Button variant="fab" aria-label="Close" onClick={this.props.onToggleForm(false)}>
+            <Button variant="fab" aria-label="Close" onClick={onToggleForm(false)}>
               <CloseIcon />
             </Button>
           </div>
