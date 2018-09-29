@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { withStyles, WithStyles, Theme } from '@material-ui/core/styles';
-import { Button, Typography } from '@material-ui/core';
-import AddIcon from '@material-ui/icons/Add';
 
-import ReportForm from './ReportForm';
 import Navigation from './components/Navigation';
+import FeedPage from './FeedPage';
+import { Route, Switch } from 'react-router';
+import HelpPage from './HelpPage';
 
 const styles = (theme: Theme) => ({
   root: {
@@ -14,11 +14,6 @@ const styles = (theme: Theme) => ({
     maxWidth: 600,
     margin: '0 auto',
     padding: '1.8em 0 0',
-  },
-  fab: {
-    position: 'absolute' as 'absolute',
-    bottom: theme.spacing.unit * 4,
-    right: theme.spacing.unit * 4,
   },
 });
 
@@ -47,23 +42,18 @@ class App extends React.Component<WithStyles<typeof styles>, IState> {
 
   render() {
     const { classes } = this.props;
+    const renderFeedPage = () => (
+      <FeedPage onToggleReportForm={this.toggleReportForm} openReportForm={this.state.openReportForm} />
+    );
 
     return (
       <div className={classes.root}>
         <Navigation openDrawer={this.state.openDrawer} toggleDrawer={this.toggleDrawer} />
-        <main>
-          <div className={classes.mainContent}>
-            {this.state.openReportForm ?
-              <ReportForm onToggleForm={this.toggleReportForm} /> :
-              <Typography variant="title" align="center" color="textSecondary">
-                Let's know about a hazard
-              </Typography>}
-          </div>
-          
-          {!this.state.openReportForm && 
-            <Button variant="fab" color="secondary" className={classes.fab} aria-label="Add" onClick={this.toggleReportForm(true)} >
-              <AddIcon />
-            </Button>}
+        <main className={classes.mainContent}>
+          <Switch>
+            <Route exact={true} path='/' render={renderFeedPage}/>
+            <Route path='/help' component={HelpPage} />
+          </Switch>
         </main>
       </div>
     );

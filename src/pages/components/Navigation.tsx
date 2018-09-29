@@ -80,7 +80,9 @@ const Navigation =  (props: WithStyles<typeof styles> & IProp) => {
 								<ListItemIcon>
 									<RssFeedIcon />
 								</ListItemIcon>
-								<NavLink className={classes.link} to='/'><ListItemText primary="Feed"/></NavLink>
+								<NavLink className={classes.link} to='/'>
+									<ListItemText primary="Feed"/>
+								</NavLink>
 							</ListItem>
 							<ListItem button={true}>
 								<ListItemIcon>
