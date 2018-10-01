@@ -43,6 +43,9 @@ const styles = (theme: Theme) => ({
 	link: {
 		textDecoration: 'none',
 	},
+	currentLink: {
+    borderBottom: '3px solid grey',
+  },
 });
 
 interface IProp {
@@ -80,7 +83,7 @@ const Navigation =  (props: WithStyles<typeof styles> & IProp) => {
 								<ListItemIcon>
 									<RssFeedIcon />
 								</ListItemIcon>
-								<NavLink className={classes.link} to='/'>
+								<NavLink exact={true} className={classes.link} activeClassName={classes.currentLink} to='/'>
 									<ListItemText primary="Feed"/>
 								</NavLink>
 							</ListItem>
@@ -88,7 +91,7 @@ const Navigation =  (props: WithStyles<typeof styles> & IProp) => {
 								<ListItemIcon>
 									<HelpOutlineIcon />
 								</ListItemIcon>
-								<NavLink className={classes.link} to='/help'>
+								<NavLink className={classes.link} activeClassName={classes.currentLink} to='/help'>
 									<ListItemText primary="Help"/>
 								</NavLink>
 							</ListItem>
