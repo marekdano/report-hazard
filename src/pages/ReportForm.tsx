@@ -32,38 +32,42 @@ class ReportForm extends React.Component<WithStyles<typeof styles> & IProps> {
 		const { classes, onToggleForm } = this.props; 
 
 		return (
-			<div className={classes.container}>
-				<form>
-          <div>
-            <TextField
-              id="title"
-              label="Title"
-              type="search"
-              className={classes.textField}
-              margin="normal"
-            />
-          </div>
-					<div>
-            <TextField
-              id="search"
-              label="Location"
-              className={classes.textField}
-              margin="normal"
-            />
-          </div>
-					<div className={classes.btnSubmit}>
-            <Button variant="contained" color="secondary">
-              Send
+      <form>
+        <div>
+          <TextField
+            id="title"
+            label="Title"
+            type="search"
+            className={classes.textField}
+            margin="normal"
+          />
+        </div>
+        <div>
+          <TextField
+            id="search"
+            label="Location"
+            className={classes.textField}
+            margin="normal"
+          />
+          <div className="input-section">
+            <Button variant="contained" color="primary" id="location-btn">
+              Get Location
             </Button>
+            <div className="mdl-spinner mdl-js-spinner is-active" id="location-loader" />
           </div>
-					<div className={classes.btnClose}>
-            <Button variant="fab" aria-label="Close" onClick={onToggleForm(false)}>
-              <CloseIcon />
-            </Button>
-          </div>
-        </form>
-			</div>
-		);
+        </div>
+        <div className={classes.btnSubmit}>
+          <Button variant="contained" color="secondary">
+            Send
+          </Button>
+        </div>
+        <div className={classes.btnClose}>
+          <Button variant="fab" aria-label="Close" onClick={onToggleForm(false)}>
+            <CloseIcon />
+          </Button>
+        </div>
+      </form>
+    );
 	}
 }
 
