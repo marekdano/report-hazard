@@ -57,7 +57,7 @@ const Navigation =  (props: WithStyles<typeof styles> & IProp) => {
 	const { classes, openDrawer, toggleDrawer } = props;
 	
 	return (
-		<AppBar position="static">
+		<AppBar position="fixed">
 			<Toolbar>
 				<IconButton 
 					className={classes.menuButton} 

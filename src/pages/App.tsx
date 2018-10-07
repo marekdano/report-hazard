@@ -12,8 +12,8 @@ const styles = (theme: Theme) => ({
   },
   mainContent: {
     maxWidth: 600,
-    margin: '0 auto',
-    padding: '1.8em 0 0',
+    margin: '56px auto 10px',
+    paddingTop: '1.4rem',
   },
 });
 

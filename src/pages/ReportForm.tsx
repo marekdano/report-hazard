@@ -50,7 +50,7 @@ class ReportForm extends React.Component<WithStyles<typeof styles> & IProps> {
             margin="normal"
           />
           <div className="input-section">
-            <Button variant="contained" color="primary" id="location-btn">
+            <Button color="primary" id="location-btn">
               Get Location
             </Button>
             <div className="mdl-spinner mdl-js-spinner is-active" id="location-loader" />
