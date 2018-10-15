@@ -22,6 +22,40 @@ interface IState {
   openDrawer: boolean;
 };
 
+function initMedia() {
+	const navigatr = navigator as any;
+	if (!('mediaDevices' in navigatr)) {
+		navigatr.mediaDevices = {};
+	}
+
+	if (!('getUserMedia' in navigator.mediaDevices)) {
+		navigatr.mediaDevices.getUserMedia = (constraints: any) => {
+			const getUserMedia = navigatr.webkitGetUserMedia || navigatr.mozGetuserMedia;
+
+			if (!getUserMedia) {
+				return Promise.reject(new Error('getuserMedia is not implemented!'));
+			}
+
+			return new Promise((resolve, reject) => {
+				getUserMedia.call(navigatr, constraints, resolve, reject);
+			});
+		}
+	}
+
+	navigatr.mediaDevices.getUserMedia({video: true})
+		.then((stream: any) => {
+			// (videoPlayer.current as HTMLMediaElement).srcObject = stream;
+			// (videoPlayer.current as HTMLElement).style.display = 'block';
+			console.log(stream);
+		})
+		.catch((err: any) => {
+			// if (imagePickerArea.current) {
+			// 	imagePickerArea.current.style.display = 'block'; 
+			// }
+			console.log(err);
+		})
+}
+
 class App extends React.Component<WithStyles<typeof styles>, IState> {
   state = {
     openReportForm: false,
@@ -38,6 +72,7 @@ class App extends React.Component<WithStyles<typeof styles>, IState> {
     this.setState({
       openReportForm: open
     });
+    initMedia();
   };
 
   render() {
