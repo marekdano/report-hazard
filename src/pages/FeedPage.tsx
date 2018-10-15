@@ -54,25 +54,39 @@ function initMedia() {
 
 	navigatr.mediaDevices.getUserMedia({video: true})
 		.then((stream: any) => {
+			(videoPlayer.current as HTMLMediaElement).srcObject = stream;
+			(videoPlayer.current as HTMLElement).style.display = 'block';
 			console.log(stream);
 		})
 		.catch((err: any) => {
+			if (imagePickerArea.current) {
+				imagePickerArea.current.style.display = 'block'; 
+			}
 			console.log(err);
 		})
 }
 
+let videoPlayer: React.RefObject<HTMLVideoElement>;
+let imagePickerArea: React.RefObject<HTMLDivElement>;
+let canvasElem: React.RefObject<HTMLCanvasElement>;
+
 const FeedPage = (props: WithStyles<typeof styles> & IProp) => {
 	const { classes, onToggleReportForm, openReportForm } = props;
+
+	videoPlayer = React.createRef();
+	imagePickerArea = React.createRef();
+	canvasElem = React.createRef();
+	
 	initMedia();
 
 	return (
 		<div>
 			{openReportForm ?
 				<div className={classes.container}>
-       		<video className={classes.mediaContainer} id="player" autoPlay={true} />
-        	<canvas className={classes.mediaContainer} id="canvas" width="320px" height="240px" />
+       		<video ref={videoPlayer} className={classes.mediaContainer} id="player" autoPlay={true} />
+        	<canvas ref={canvasElem} className={classes.mediaContainer} id="canvas" width="320px" height="240px" />
 					<Button variant="contained" color="primary" className={classes.captureButton}>Capture</Button>
-					<div className={classes.pickImage} id="pick-image">
+					<div ref={imagePickerArea} className={classes.pickImage} id="pick-image">
           	<h6>Pick an Image instead</h6>
           	<input type="file" accept="image/*" id="image-picker" />
         	</div>
