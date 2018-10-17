@@ -43,28 +43,52 @@ interface IProps {
   onToggleForm: (open: boolean) => () => void, 
 }
 class ReportForm extends React.Component<WithStyles<typeof styles> & IProps> {
+  state = {
+    disableCaptureBtn: false
+  }
 
   private videoPlayer: React.RefObject<HTMLVideoElement> = React.createRef();;
 	private imagePickerArea: React.RefObject<HTMLDivElement> = React.createRef();
-	private canvasElem: React.RefObject<HTMLCanvasElement> = React.createRef();
+  private canvasElem: React.RefObject<HTMLCanvasElement> = React.createRef();
+  // private captureBtn: React.RefObject<HTMLButtonElement> = React.createRef();
+  
+  handleCapture = () => {
+    (this.canvasElem.current as HTMLElement).style.display = 'block';
+    (this.videoPlayer.current as HTMLElement).style.display = 'none';
+    // (this.captureBtn.current as HTMLElement).style.display = 'none';
+    const context = (this.canvasElem.current as HTMLCanvasElement).getContext('2d');
+    if (context) {
+      context.drawImage(
+        this.videoPlayer.current as HTMLVideoElement,
+        0, 
+        0, 
+        320, 
+        (this.videoPlayer.current as HTMLVideoElement).videoHeight / ((this.videoPlayer.current as HTMLVideoElement).videoWidth / 320)
+      );
+      ((this.videoPlayer.current as HTMLMediaElement).srcObject as MediaStream).getVideoTracks().forEach((track) => {
+        return track.stop(); 
+      });
+      this.setState({...this.state, disableCaptureBtn: true})
+    }
+  }
   
 	render() {
     const { classes, onToggleForm, video } = this.props; 
     
-		if (video.stream && this.videoPlayer.current) {
+		if (video.stream && this.videoPlayer.current && !this.state.disableCaptureBtn) {
 			(this.videoPlayer.current as HTMLMediaElement).srcObject = video.stream;
 			(this.videoPlayer.current as HTMLElement).style.display = 'block';
 		}
 		
 		if (video.error && this.imagePickerArea.current) {
-			this.imagePickerArea.current.style.display = 'block';
+      this.imagePickerArea.current.style.display = 'block';
 		}
 
 		return (
       <div>
         <video ref={this.videoPlayer} className={classes.mediaContainer} id="player" autoPlay={true} />
 			  <canvas ref={this.canvasElem} className={classes.mediaContainer} id="canvas" width="320px" height="240px" />
-			  <Button variant="contained" color="primary" className={classes.captureButton}>Capture</Button>
+        <Button variant="contained" color="primary" className={classes.captureButton} disabled={this.state.disableCaptureBtn} onClick={this.handleCapture}>Capture</Button>
 			  <div ref={this.imagePickerArea} className={classes.pickImage} id="pick-image">
 			    <h6>Pick an Image instead</h6>
 			    <input type="file" accept="image/*" id="image-picker" />
