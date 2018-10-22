@@ -44,6 +44,7 @@ interface IProps {
 }
 class ReportForm extends React.Component<WithStyles<typeof styles> & IProps> {
   state = {
+    picture: null,
     disableCaptureBtn: false
   }
 
@@ -68,7 +69,8 @@ class ReportForm extends React.Component<WithStyles<typeof styles> & IProps> {
       ((this.videoPlayer.current as HTMLMediaElement).srcObject as MediaStream).getVideoTracks().forEach((track) => {
         return track.stop(); 
       });
-      this.setState({...this.state, disableCaptureBtn: true})
+      const picture = Utils.dataURItoBlob((this.canvasElem.current as HTMLCanvasElement).toDataURL());
+      this.setState({...this.state, disableCaptureBtn: true, picture});
     }
   }
   
