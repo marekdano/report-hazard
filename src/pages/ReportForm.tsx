@@ -3,6 +3,7 @@ import { withStyles, WithStyles, Theme } from '@material-ui/core/styles';
 import { TextField, Button } from '@material-ui/core';
 import createStyles from '@material-ui/core/styles/createStyles';
 import CloseIcon from '@material-ui/icons/Close';
+import { Utils } from '../utils';
 
 const styles = (theme: Theme) => 
   createStyles({
@@ -73,6 +74,11 @@ class ReportForm extends React.Component<WithStyles<typeof styles> & IProps> {
       this.setState({...this.state, disableCaptureBtn: true, picture});
     }
   }
+
+  handleFileChosen = (event: any) => {
+    const picture = event.target.files[0];
+    this.setState({...this.state, picture});
+  };
   
 	render() {
     const { classes, onToggleForm, video } = this.props; 
@@ -93,7 +99,7 @@ class ReportForm extends React.Component<WithStyles<typeof styles> & IProps> {
         <Button variant="contained" color="primary" className={classes.captureButton} disabled={this.state.disableCaptureBtn} onClick={this.handleCapture}>Capture</Button>
 			  <div ref={this.imagePickerArea} className={classes.pickImage} id="pick-image">
 			    <h6>Pick an Image instead</h6>
-			    <input type="file" accept="image/*" id="image-picker" />
+			    <input type="file" accept="image/*" id="image-picker" onChange={this.handleFileChosen}/>
 			  </div>
         <form>
           <div>

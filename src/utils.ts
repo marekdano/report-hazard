@@ -1,5 +1,5 @@
 
-class Utils {
+export class Utils {
 	static dataURItoBlob(dataURI: any) {
 		const byteString = atob(dataURI.split(',')[1]);
 		const mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
