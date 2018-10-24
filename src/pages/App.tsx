@@ -43,10 +43,19 @@ class App extends React.Component<WithStyles<typeof styles>, IState> {
   };
 
   toggleReportForm = (open: boolean) => () => {
+    if (!open) {
+      if (this.state.video.stream) {
+        (this.state.video.stream as any).getVideoTracks().forEach((track: any) => {
+          return track.stop(); 
+        });
+      } 
+      this.setState({video: {stream: null, error: null}});
+    } else {
+      this.initMedia();
+    }
     this.setState({
       openReportForm: open
     });
-    this.initMedia();
   };
 
   initMedia() {
@@ -81,7 +90,11 @@ class App extends React.Component<WithStyles<typeof styles>, IState> {
   render() {
     const { classes } = this.props;
     const renderFeedPage = () => (
-      <FeedPage onToggleReportForm={this.toggleReportForm} openReportForm={this.state.openReportForm} video={this.state.video} />
+      <FeedPage 
+        onToggleReportForm={this.toggleReportForm} 
+        openReportForm={this.state.openReportForm} 
+        video={this.state.video} 
+      />
     );
 
     return (
