@@ -13,7 +13,7 @@ const styles = (theme: Theme) => ({
   mainContent: {
     maxWidth: 600,
     margin: '56px auto 10px',
-    paddingTop: '1.4rem',
+    paddingTop: '1em',
   },
 });
 
@@ -69,7 +69,7 @@ class App extends React.Component<WithStyles<typeof styles>, IState> {
         const getUserMedia = navigatr.webkitGetUserMedia || navigatr.mozGetuserMedia;
   
         if (!getUserMedia) {
-          return Promise.reject(new Error('getuserMedia is not implemented!'));
+          return Promise.reject(new Error('getUserMedia is not implemented!'));
         }
   
         return new Promise((resolve, reject) => {

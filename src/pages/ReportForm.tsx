@@ -3,6 +3,7 @@ import { withStyles, WithStyles, Theme } from '@material-ui/core/styles';
 import { TextField, Button } from '@material-ui/core';
 import createStyles from '@material-ui/core/styles/createStyles';
 import CloseIcon from '@material-ui/icons/Close';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import { Utils } from '../utils';
 
 const styles = (theme: Theme) => 
@@ -27,6 +28,7 @@ const styles = (theme: Theme) =>
     },
     btnClose: {
       marginTop: theme.spacing.unit * 5,
+      marginBottom: theme.spacing.unit * 4,
     },
     pickImage: {
       display: 'none',
@@ -34,6 +36,9 @@ const styles = (theme: Theme) =>
     captureButton: {
       margin: '10px auto'
     },
+    location: {
+      margin: theme.spacing.unit * 1.4,
+    }
   });
 
 interface IProps {
@@ -43,9 +48,15 @@ interface IProps {
 	}
   onToggleForm: (open: boolean) => () => void, 
 }
-class ReportForm extends React.Component<WithStyles<typeof styles> & IProps> {
+
+interface IState {
+  picture: any;
+  displayLocationBtn: boolean;
+}
+class ReportForm extends React.Component<WithStyles<typeof styles> & IProps, IState> {
   state = {
     picture: null,
+    displayLocationBtn: true,
   }
 
   private videoPlayer: React.RefObject<HTMLVideoElement> = React.createRef();;
@@ -77,6 +88,23 @@ class ReportForm extends React.Component<WithStyles<typeof styles> & IProps> {
     const picture = event.target.files[0];
     this.setState({...this.state, picture});
   };
+
+  handleLocation = () => {
+    if (!('geolocation' in navigator)) {
+      alert(`Couldn't fetch location, please enter manually!`);
+      return;
+    }
+    this.setState({...this.state, displayLocationBtn: false});
+
+    navigator.geolocation.getCurrentPosition((position) => {
+      console.log(position.coords.latitude, position.coords.longitude);
+      this.setState({...this.state, displayLocationBtn: true});
+    }, (error) => {
+      console.log(error);
+      alert(`Couldn't fetch location, please enter manually!`);
+      this.setState({...this.state, displayLocationBtn: true});
+    }, {timeout: 7000});
+  };
   
 	render() {
     const { classes, onToggleForm, video } = this.props; 
@@ -106,7 +134,7 @@ class ReportForm extends React.Component<WithStyles<typeof styles> & IProps> {
 			    <input type="file" accept="image/*" id="image-picker" onChange={this.handleFileChosen}/>
 			  </div>
         <form>
-          <div>
+          <section>
             <TextField
               id="title"
               label="Title"
@@ -114,31 +142,33 @@ class ReportForm extends React.Component<WithStyles<typeof styles> & IProps> {
               className={classes.textField}
               margin="normal"
             />
-          </div>
-          <div>
+          </section>
+          <section>
             <TextField
               id="search"
               label="Location"
               className={classes.textField}
               margin="normal"
             />
-            <div className="input-section">
-              <Button color="primary" id="location-btn">
+          </section>
+          <section className={classes.location}>
+            {this.state.displayLocationBtn ? 
+              <Button color="primary" id="location-btn" onClick={this.handleLocation}>
                 Get Location
-              </Button>
-              <div className="mdl-spinner mdl-js-spinner is-active" id="location-loader" />
-            </div>
-          </div>
-          <div className={classes.btnSubmit}>
+              </Button> : 
+              <CircularProgress size={26} />}
+            {/* <div className="mdl-spinner mdl-js-spinner is-active" id="location-loader" /> */}
+          </section>
+          <section className={classes.btnSubmit}>
             <Button variant="contained" color="secondary">
               Send
             </Button>
-          </div>
-          <div className={classes.btnClose}>
+          </section>
+          <section className={classes.btnClose}>
             <Button variant="fab" aria-label="Close" onClick={onToggleForm(false)}>
               <CloseIcon />
             </Button>
-          </div>
+          </section>
         </form>
       </div>
     );
