@@ -52,11 +52,13 @@ interface IProps {
 interface IState {
   picture: any;
   displayLocationBtn: boolean;
+  locationValue: string;
 }
 class ReportForm extends React.Component<WithStyles<typeof styles> & IProps, IState> {
   state = {
     picture: null,
     displayLocationBtn: true,
+    locationValue: '',
   }
 
   private videoPlayer: React.RefObject<HTMLVideoElement> = React.createRef();;
@@ -98,6 +100,9 @@ class ReportForm extends React.Component<WithStyles<typeof styles> & IProps, ISt
 
     navigator.geolocation.getCurrentPosition((position) => {
       console.log(position.coords.latitude, position.coords.longitude);
+      // TODO call google API to get the address based on coordinates of lat and lng
+      // currently add location value
+      this.setState({...this.state, locationValue: 'In Dublin'});
       this.setState({...this.state, displayLocationBtn: true});
     }, (error) => {
       console.log(error);
@@ -105,6 +110,11 @@ class ReportForm extends React.Component<WithStyles<typeof styles> & IProps, ISt
       this.setState({...this.state, displayLocationBtn: true});
     }, {timeout: 7000});
   };
+
+  handleLocationValue = (e: any) => {
+    const locationValue = e.target.value;
+    this.setState({...this.state, locationValue });
+  }
   
 	render() {
     const { classes, onToggleForm, video } = this.props; 
@@ -149,6 +159,8 @@ class ReportForm extends React.Component<WithStyles<typeof styles> & IProps, ISt
               label="Location"
               className={classes.textField}
               margin="normal"
+              value={this.state.locationValue}
+              onChange={this.handleLocationValue}
             />
           </section>
           <section className={classes.location}>
