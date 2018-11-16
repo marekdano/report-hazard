@@ -101,7 +101,7 @@ class ReportForm extends React.Component<WithStyles<typeof styles> & IProps, ISt
     navigator.geolocation.getCurrentPosition((position) => {
       console.log(position.coords.latitude, position.coords.longitude);
       // TODO call google API to get the address based on coordinates of lat and lng
-      // currently add location value
+      // currently add a hard-coded location value
       this.setState({...this.state, locationValue: 'In Dublin'});
       this.setState({...this.state, displayLocationBtn: true});
     }, (error) => {
