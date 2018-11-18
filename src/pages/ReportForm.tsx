@@ -5,6 +5,7 @@ import createStyles from '@material-ui/core/styles/createStyles';
 import CloseIcon from '@material-ui/icons/Close';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { Utils } from '../utils';
+import { Formik, FormikProps, Form, Field, FieldProps } from 'formik';
 
 const styles = (theme: Theme) => 
   createStyles({
@@ -50,15 +51,18 @@ interface IProps {
 }
 
 interface IState {
-  picture: any;
   displayLocationBtn: boolean;
-  locationValue: string;
+  formPicture: any;
+  formTitle: string;
+  formLocation: string;
 }
+
 class ReportForm extends React.Component<WithStyles<typeof styles> & IProps, IState> {
   state = {
-    picture: null,
     displayLocationBtn: true,
-    locationValue: '',
+    formPicture: null,
+    formTitle: '',
+    formLocation: '',
   }
 
   private videoPlayer: React.RefObject<HTMLVideoElement> = React.createRef();;
@@ -82,13 +86,13 @@ class ReportForm extends React.Component<WithStyles<typeof styles> & IProps, ISt
         return track.stop(); 
       });
       const picture = Utils.dataURItoBlob((this.canvasElem.current as HTMLCanvasElement).toDataURL());
-      this.setState({...this.state, picture});
+      this.setState({...this.state, formPicture: picture});
     }
   }
 
   handleFileChosen = (event: any) => {
     const picture = event.target.files[0];
-    this.setState({...this.state, picture});
+    this.setState({...this.state, formPicture: picture});
   };
 
   handleLocation = () => {
@@ -102,7 +106,7 @@ class ReportForm extends React.Component<WithStyles<typeof styles> & IProps, ISt
       console.log(position.coords.latitude, position.coords.longitude);
       // TODO call google API to get the address based on coordinates of lat and lng
       // currently add a hard-coded location value
-      this.setState({...this.state, locationValue: 'In Dublin'});
+      this.setState({...this.state, formLocation: 'In Dublin'});
       this.setState({...this.state, displayLocationBtn: true});
     }, (error) => {
       console.log(error);
@@ -113,7 +117,7 @@ class ReportForm extends React.Component<WithStyles<typeof styles> & IProps, ISt
 
   handleLocationValue = (e: any) => {
     const locationValue = e.target.value;
-    this.setState({...this.state, locationValue });
+    this.setState({...this.state, formLocation: locationValue });
   }
   
 	render() {
@@ -132,7 +136,102 @@ class ReportForm extends React.Component<WithStyles<typeof styles> & IProps, ISt
       <div>
         <video ref={this.videoPlayer} className={classes.mediaContainer} id="player" autoPlay={true} />
 			  <canvas ref={this.canvasElem} className={classes.mediaContainer} id="canvas" width="320px" height="240px" />
-        <Button variant="contained" color="primary" 
+        
+        <Formik 
+          // tslint:disable:jsx-no-lambda
+          initialValues={{ 
+            formTitle: '',
+            formLocation: this.state.formLocation,
+            formPicture: this.state.formPicture,
+            displayLocationBtn: this.state.displayLocationBtn,
+          }}
+          onSubmit={(values: IState) => alert(JSON.stringify(values))} 
+          render={(formikProps: FormikProps<IState>) => (
+            <Form>
+              <Field
+                name="formPicture"
+                render={({ field, form }: FieldProps<IState>) => (
+                  <div>
+                    <Button variant="contained" color="primary" 
+                      className={classes.captureButton} 
+                      disabled={video && video.stream === null} 
+                      onClick={this.handleCapture}
+                    >
+                      Capture
+                    </Button>
+                    <div ref={this.imagePickerArea} className={classes.pickImage} id="pick-image">
+                      <h6>Pick an Image instead</h6>
+                      <input type="file" accept="image/*" 
+                        id="image-picker" 
+                        onChange={this.handleFileChosen}
+                      />
+                    </div>
+                  </div>
+                )}
+              />
+              <Field
+                name="formTitle"
+                render={({ field, form }: FieldProps<IState>) => (
+                  <div>
+                    <section>
+                      <TextField
+                        id="title"
+                        label="Title"
+                        type="text"
+                        className={classes.textField}
+                        margin="normal"
+                        {...field}
+                      />
+                      {form.touched.formTitle &&
+                        form.errors.formTitle &&
+                        form.errors.formTitle}
+                    </section>
+                  </div>
+                )}
+              />
+              <Field 
+                name="formLocation"
+                render={({ field, form }: FieldProps<IState>) => (
+                  <div>
+                    <section>
+                      <TextField
+                        id="location"
+                        label="Location"
+                        className={classes.textField}
+                        margin="normal"
+                        value={this.state.formLocation}
+                        {...field}
+                        onChange={this.handleLocationValue}
+                      />
+                      {form.touched.formLocation &&
+                        form.errors.formLocation &&
+                        form.errors.formLocation}
+                    </section>
+                    <section className={classes.location}>
+                      {this.state.displayLocationBtn ? 
+                        <Button color="primary" id="location-btn" onClick={this.handleLocation}>
+                          Get Location
+                        </Button> : 
+                        <CircularProgress size={26} />}
+                    </section>
+                  </div>
+                )}
+              />
+              <section className={classes.btnSubmit}>
+                <Button type="submit" variant="contained" color="secondary">
+                  Send
+                </Button>
+              </section>
+            </Form>
+          )}
+        />
+        <section className={classes.btnClose}>
+          <Button variant="fab" aria-label="Close" onClick={onToggleForm(false)}>
+            <CloseIcon />
+          </Button>
+        </section>
+
+        {/* <Button variant="contained" color="primary" 
           className={classes.captureButton} 
           disabled={video && video.stream === null} 
           onClick={this.handleCapture}
@@ -159,7 +258,7 @@ class ReportForm extends React.Component<WithStyles<typeof styles> & IProps, ISt
               label="Location"
               className={classes.textField}
               margin="normal"
-              value={this.state.locationValue}
+              value={this.state.formLocation}
               onChange={this.handleLocationValue}
             />
           </section>
@@ -169,19 +268,19 @@ class ReportForm extends React.Component<WithStyles<typeof styles> & IProps, ISt
                 Get Location
               </Button> : 
               <CircularProgress size={26} />}
-            {/* <div className="mdl-spinner mdl-js-spinner is-active" id="location-loader" /> */}
+            {/* <div className="mdl-spinner mdl-js-spinner is-active" id="location-loader" /> *}
           </section>
           <section className={classes.btnSubmit}>
             <Button variant="contained" color="secondary">
               Send
             </Button>
           </section>
-          <section className={classes.btnClose}>
-            <Button variant="fab" aria-label="Close" onClick={onToggleForm(false)}>
-              <CloseIcon />
-            </Button>
-          </section>
         </form>
+        <section className={classes.btnClose}>
+          <Button variant="fab" aria-label="Close" onClick={onToggleForm(false)}>
+            <CloseIcon />
+          </Button>
+        </section>*/}
       </div>
     );
 	}
