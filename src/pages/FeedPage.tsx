@@ -24,31 +24,25 @@ interface IProp {
 	onToggleReportForm: (key: boolean) => () => void;
 }
 
-class FeedPage extends React.Component<WithStyles<typeof styles> & IProp> {
-	constructor(props: WithStyles<typeof styles> & IProp) {
-		super(props);
-	}
+const FeedPage = (props: WithStyles<typeof styles> & IProp) => {
+	const { classes, onToggleReportForm, openReportForm, video } = props;
 
-	render() {
-		const { classes, onToggleReportForm, openReportForm, video } = this.props;
-
-		return (
-			<div>
-				{openReportForm ?
-					<div className={classes.container}>
-						<ReportForm onToggleForm={onToggleReportForm} video={video} />
-					</div> :
-					<Typography variant="title" align="center" color="textSecondary">
-						Let's know about a hazard
-					</Typography>}
-		
-				{!openReportForm && 
-					<Button variant="fab" color="secondary" className={classes.fab} aria-label="Add" onClick={onToggleReportForm(true)}>
-						<AddIcon />
-					</Button>}
-			</div>
-		);
-	}
+	return (
+		<div>
+			{openReportForm ?
+				<div className={classes.container}>
+					<ReportForm onToggleForm={onToggleReportForm} video={video} />
+				</div> :
+				<Typography variant="title" align="center" color="textSecondary">
+					Let's know about a hazard
+				</Typography>}
+	
+			{!openReportForm && 
+				<Button variant="fab" color="secondary" className={classes.fab} aria-label="Add" onClick={onToggleReportForm(true)}>
+					<AddIcon />
+				</Button>}
+		</div>
+	);
 }
 
 export default withStyles(styles, { withTheme: true })(FeedPage);
